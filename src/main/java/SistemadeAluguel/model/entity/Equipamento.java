@@ -5,18 +5,21 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
 public class Equipamento {
 
-    private Long id;
+
+    private Long equipamentoId;
 
     private String nome;
 
     private boolean disponivel;
 
-    private Double valorDiaria;
-    
+    private BigDecimal valorDiaria;
+
     private CategoriaEquipamento categoria;
 }
