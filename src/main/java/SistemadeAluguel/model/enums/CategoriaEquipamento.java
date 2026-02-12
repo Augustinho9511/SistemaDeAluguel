@@ -1,5 +1,8 @@
 package SistemadeAluguel.model.enums;
 
-
-public class CategoriaEquipamento {
+public enum CategoriaEquipamento {
+    FERRAMENTA,
+    ELETRONICO,
+    JARDINAGEM,
+    CONSTRUCAO;
 }

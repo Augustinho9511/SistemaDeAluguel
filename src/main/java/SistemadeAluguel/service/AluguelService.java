@@ -25,6 +25,8 @@ public class AluguelService {
         this.clienteRepository = clienteRepository;
     }
 
+
+
     public AluguelResponseDTO alugar(AluguelRequestDTO request) {
 
         var cliente = clienteRepository.findById(request.getClienteId())
