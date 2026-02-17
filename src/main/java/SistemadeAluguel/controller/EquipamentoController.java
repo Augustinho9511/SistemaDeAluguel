@@ -22,5 +22,4 @@ public class EquipamentoController {
         return ResponseEntity.status(201).body(equipamentoRepository.save(equipamento));
     }
 
-
 }

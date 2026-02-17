@@ -3,6 +3,7 @@ package SistemadeAluguel.service;
 import SistemadeAluguel.model.dto.AluguelRequestDTO;
 import SistemadeAluguel.model.dto.AluguelResponseDTO;
 import SistemadeAluguel.model.entity.Aluguel;
+import SistemadeAluguel.model.entity.Equipamento;
 import SistemadeAluguel.repository.AluguelRepository;
 import SistemadeAluguel.repository.ClienteRepository;
 import SistemadeAluguel.repository.EquipamentoRepository;
@@ -24,8 +25,6 @@ public class AluguelService {
         this.equipamentoRepository = equipamentoRepository;
         this.clienteRepository = clienteRepository;
     }
-
-
 
     public AluguelResponseDTO alugar(AluguelRequestDTO request) {
 
@@ -62,5 +61,25 @@ public class AluguelService {
         response.setValorTotal(novoAluguel.getValorTotal());
 
         return response;
+    }
+
+    public String devolver(Long aluguelId) {
+        Aluguel aluguel = aluguelRepository.findById(aluguelId)
+                .orElseThrow(() -> new RuntimeException("Aluguel não encontrado"));
+
+        Equipamento equipamento = aluguel.getEquipamento();
+        LocalDate hoje = LocalDate.now();
+        BigDecimal valorTotal = aluguel.getValorTotal();
+
+        if (hoje.isAfter(aluguel.getDataPrevista())) {
+            long diasAtraso = java.time.temporal.ChronoUnit.DAYS.between(aluguel.getDataPrevista(), hoje);
+            BigDecimal multa = equipamento.getValorDiaria().multiply(new BigDecimal(diasAtraso)).multiply(new BigDecimal("0.20"));
+            valorTotal = valorTotal.add(multa);
+        }
+
+        equipamento.setDisponivel(true);
+        equipamentoRepository.save(equipamento);
+
+        return "Equipamento devolvido com sucesso! valor total a pagar: R$" + valorTotal;
     }
 }
