@@ -27,4 +27,6 @@ public class Equipamento {
 
     @Enumerated(EnumType.STRING)
     private CategoriaEquipamento categoria;
+
+    private boolean ativo = true;
 }

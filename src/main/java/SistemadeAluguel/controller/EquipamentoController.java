@@ -2,24 +2,35 @@ package SistemadeAluguel.controller;
 
 
 import SistemadeAluguel.model.entity.Equipamento;
-import SistemadeAluguel.repository.EquipamentoRepository;
-import lombok.RequiredArgsConstructor;
+import SistemadeAluguel.service.EquipamentoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/equipamentos")
-@RequiredArgsConstructor
 public class EquipamentoController {
 
-    private final EquipamentoRepository equipamentoRepository;
+
+    @Autowired
+    private EquipamentoService equipamentoService;
 
     @PostMapping
     public ResponseEntity<Equipamento> criar(@RequestBody Equipamento equipamento) {
-        return ResponseEntity.status(201).body(equipamentoRepository.save(equipamento));
+        Equipamento novo = equipamentoService.salvar(equipamento);
+        return ResponseEntity.status(201).body(novo);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        equipamentoService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/disponiveis")
+    public List<Equipamento> listarDisponiveis() {
+        return equipamentoService.listarAtivosEDisponiveis();
+    }
 }

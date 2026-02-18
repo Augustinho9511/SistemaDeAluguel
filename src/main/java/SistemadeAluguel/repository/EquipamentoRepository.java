@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface EquipamentoRepository extends JpaRepository <Equipamento, Long> {
 
-    List<Equipamento> findByDisponivelTrue();
+    List<Equipamento> findByAtivoTrueAndDisponivelTrue();
 }
