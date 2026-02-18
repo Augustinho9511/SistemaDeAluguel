@@ -18,4 +18,5 @@ public class AluguelResponseDTO {
     String nomeEquipamento;
     LocalDate datapPrevista;
     BigDecimal valorTotal;
+    String status;
 }

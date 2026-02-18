@@ -4,6 +4,7 @@ import SistemadeAluguel.model.dto.AluguelRequestDTO;
 import SistemadeAluguel.model.dto.AluguelResponseDTO;
 import SistemadeAluguel.model.entity.Aluguel;
 import SistemadeAluguel.model.entity.Equipamento;
+import SistemadeAluguel.model.enums.StatusAluguel;
 import SistemadeAluguel.repository.AluguelRepository;
 import SistemadeAluguel.repository.ClienteRepository;
 import SistemadeAluguel.repository.EquipamentoRepository;
@@ -50,7 +51,7 @@ public class AluguelService {
         novoAluguel.setDataInicio(LocalDate.now());
         novoAluguel.setDataPrevista(dataPrevista);
         novoAluguel.setValorTotal(valorTotal);
-
+        novoAluguel.setStatus(StatusAluguel.ABERTO);
         aluguelRepository.save(novoAluguel);
 
         AluguelResponseDTO response = new AluguelResponseDTO();
@@ -59,6 +60,7 @@ public class AluguelService {
         response.setNomeEquipamento(equipamento.getNome());
         response.setDatapPrevista(novoAluguel.getDataPrevista());
         response.setValorTotal(novoAluguel.getValorTotal());
+        response.setStatus(novoAluguel.getStatus().toString());
 
         return response;
     }
@@ -66,6 +68,10 @@ public class AluguelService {
     public String devolver(Long aluguelId) {
         Aluguel aluguel = aluguelRepository.findById(aluguelId)
                 .orElseThrow(() -> new RuntimeException("Aluguel não encontrado"));
+
+        if (aluguel.getStatus() == StatusAluguel.FINALIZADO) {
+            throw new RuntimeException("Este aluguel já foi finalizado anteriormente!");
+        }
 
         Equipamento equipamento = aluguel.getEquipamento();
         LocalDate hoje = LocalDate.now();

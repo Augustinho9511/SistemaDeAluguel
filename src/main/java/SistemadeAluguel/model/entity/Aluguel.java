@@ -1,5 +1,6 @@
 package SistemadeAluguel.model.entity;
 
+import SistemadeAluguel.model.enums.StatusAluguel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -31,4 +32,7 @@ public class Aluguel {
     private LocalDate dataDevolucaoReal;
 
     private BigDecimal valorTotal;
+
+    @Enumerated(EnumType.STRING)
+    private StatusAluguel status = StatusAluguel.ABERTO;
 }
