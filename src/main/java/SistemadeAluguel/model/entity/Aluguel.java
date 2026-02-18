@@ -35,4 +35,5 @@ public class Aluguel {
 
     @Enumerated(EnumType.STRING)
     private StatusAluguel status = StatusAluguel.ABERTO;
+
 }

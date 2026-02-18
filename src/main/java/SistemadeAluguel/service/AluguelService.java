@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Service
@@ -101,5 +102,9 @@ public class AluguelService {
         BigDecimal total = aluguelRepository.calcularFaturamentoTotal();
         System.out.println("Total encontrado:" + total);
         return total != null ? total : BigDecimal.ZERO;
+    }
+
+    public List<Aluguel> listAtrasados() {
+        return aluguelRepository.buscarAlugueisAtrasados(LocalDate.now());
     }
 }

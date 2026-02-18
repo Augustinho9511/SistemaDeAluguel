@@ -47,5 +47,9 @@ public class AluguelController {
         return ResponseEntity.ok(aluguelService.obterRendimentoGeral());
     }
 
-
+    @GetMapping("/atrasados")
+    public ResponseEntity<List<Aluguel>> verAtrasados() {
+        List<Aluguel> atrasados = aluguelService.listAtrasados();
+        return ResponseEntity.ok(atrasados);
+    }
 }
