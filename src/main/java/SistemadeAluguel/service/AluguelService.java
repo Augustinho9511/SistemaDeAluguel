@@ -52,6 +52,7 @@ public class AluguelService {
         novoAluguel.setDataPrevista(dataPrevista);
         novoAluguel.setValorTotal(valorTotal);
         novoAluguel.setStatus(StatusAluguel.ABERTO);
+
         aluguelRepository.save(novoAluguel);
 
         AluguelResponseDTO response = new AluguelResponseDTO();
@@ -83,9 +84,22 @@ public class AluguelService {
             valorTotal = valorTotal.add(multa);
         }
 
+        aluguel.setValorTotal(valorTotal);
+        aluguel.setStatus(StatusAluguel.FINALIZADO);
+        aluguel.setDataDevolucaoReal(hoje);
+
+        aluguelRepository.save(aluguel);
+
         equipamento.setDisponivel(true);
         equipamentoRepository.save(equipamento);
 
         return "Equipamento devolvido com sucesso! valor total a pagar: R$" + valorTotal;
+    }
+
+    public BigDecimal obterRendimentoGeral(){
+        System.out.println("Buscando faturamento...");
+        BigDecimal total = aluguelRepository.calcularFaturamentoTotal();
+        System.out.println("Total encontrado:" + total);
+        return total != null ? total : BigDecimal.ZERO;
     }
 }

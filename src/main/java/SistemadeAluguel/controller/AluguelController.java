@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,11 @@ public class AluguelController {
     public ResponseEntity<String> devolverEquipamento(@PathVariable Long id) {
         String mensagem = aluguelService.devolver(id);
         return ResponseEntity.ok(mensagem);
+    }
+
+    @GetMapping("/faturamento")
+    public ResponseEntity<BigDecimal> verFaturamento() {
+        return ResponseEntity.ok(aluguelService.obterRendimentoGeral());
     }
 
 
