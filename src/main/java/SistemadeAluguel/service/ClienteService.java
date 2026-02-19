@@ -14,9 +14,20 @@ public class ClienteService {
 
     @Transactional
     public Cliente salvar(Cliente cliente) {
+
+        if (cliente.getEmail() == null || cliente.getEmail().contains("@")) {
+            throw new RuntimeException("O e=mail informado é inválido!");
+        }
+
         if (clienteRepository.existsByCpf(cliente.getCpf())){
             throw new RuntimeException("Não foi possível concluir o cadastro. Verifique os dados ou entre em contato com o suporte.");
         }
+
+        if (clienteRepository.existsByEmail(cliente.getEmail())) {
+            throw new RuntimeException("Não foi possível concluir o cadastro. Verifique os dados ou entre em contato com o suporte.");
+        }
+
         return clienteRepository.save(cliente);
     }
+
 }

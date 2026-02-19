@@ -1,6 +1,7 @@
 package SistemadeAluguel.repository;
 
 import SistemadeAluguel.model.entity.Equipamento;
+import SistemadeAluguel.model.enums.CategoriaEquipamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,4 +9,5 @@ import java.util.List;
 public interface EquipamentoRepository extends JpaRepository <Equipamento, Long> {
 
     List<Equipamento> findByAtivoTrueAndDisponivelTrue();
+    List<Equipamento> findByCategoriaAndAtivoTrue(CategoriaEquipamento categoria);
 }

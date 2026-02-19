@@ -24,8 +24,15 @@ public class GlobalExceptionHandler{
     }
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    public ResponseEntity<ErroResposta> TratarErroDuplicidade(org.springframework.dao.DataIntegrityViolationException ex) {
+    public ResponseEntity<ErroResposta> tratarErroDuplicidade(org.springframework.dao.DataIntegrityViolationException ex) {
         ErroResposta erro = new ErroResposta(400, "Não foi possível concluir o cadastro. Verifique os dados ou entre em contato com o suporte.");
+        return ResponseEntity.status(400).body(erro);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErroResposta> tratarErroValidacaoBean(jakarta.validation.ConstraintViolationException ex){
+        String mensagem = ex.getConstraintViolations().iterator().next().getMessage();
+        ErroResposta erro = new ErroResposta(400, mensagem);
         return ResponseEntity.status(400).body(erro);
     }
 

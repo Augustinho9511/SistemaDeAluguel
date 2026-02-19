@@ -3,11 +3,13 @@ package SistemadeAluguel.service;
 import SistemadeAluguel.model.dto.AluguelRequestDTO;
 import SistemadeAluguel.model.dto.AluguelResponseDTO;
 import SistemadeAluguel.model.entity.Aluguel;
+import SistemadeAluguel.model.entity.Cliente;
 import SistemadeAluguel.model.entity.Equipamento;
 import SistemadeAluguel.model.enums.StatusAluguel;
 import SistemadeAluguel.repository.AluguelRepository;
 import SistemadeAluguel.repository.ClienteRepository;
 import SistemadeAluguel.repository.EquipamentoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,6 +37,16 @@ public class AluguelService {
 
         var equipamento = equipamentoRepository.findById(request.getEquipamentoId())
                 .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+        boolean temAtraso = aluguelRepository.existsByClienteClienteIdAndStatusAndDataPrevistaBefore(
+                cliente.getClienteId(),
+                StatusAluguel.ABERTO,
+                LocalDate.now()
+        );
+
+        if (temAtraso) {
+            throw new RuntimeException("Locação negada: O cliente possui equipamentos com devolução atrasada.");
+        }
 
         if (!equipamento.isDisponivel()) {
             throw new RuntimeException("Equipamento já está alugado por outra pessoa!");
@@ -107,4 +119,5 @@ public class AluguelService {
     public List<Aluguel> listAtrasados() {
         return aluguelRepository.buscarAlugueisAtrasados(LocalDate.now());
     }
+
 }
