@@ -3,6 +3,7 @@ package SistemadeAluguel.controller;
 import SistemadeAluguel.model.entity.Cliente;
 import SistemadeAluguel.repository.ClienteRepository;
 import SistemadeAluguel.service.ClienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente>  criar(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente>  criar(@Valid @RequestBody Cliente cliente) {
         Cliente novoCliente = clienteService.salvar(cliente);
         return ResponseEntity.status(201).body(novoCliente);
     }

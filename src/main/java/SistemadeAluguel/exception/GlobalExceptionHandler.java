@@ -17,10 +17,13 @@ public class GlobalExceptionHandler{
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroResposta> tratarErroValidacao(MethodArgumentNotValidException ex) {
-        String msg = ex.getBindingResult().getFieldError().getDefaultMessage();
-        ErroResposta erro = new ErroResposta(400, msg);
-        return ResponseEntity.status(400).body(erro);
+    public ResponseEntity<ErroResposta> tratarErroValidacao(MethodArgumentNotValidException ex){
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                System.out.println("Erro no campo: " + error.getField() + " - Mensagem: " + error.getDefaultMessage())
+        );
+
+        String msg = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+        return ResponseEntity.status(400).body(new ErroResposta(400, msg));
     }
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)

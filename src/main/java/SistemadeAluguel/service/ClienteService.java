@@ -15,7 +15,7 @@ public class ClienteService {
     @Transactional
     public Cliente salvar(Cliente cliente) {
 
-        if (cliente.getEmail() == null || cliente.getEmail().contains("@")) {
+        if (cliente.getEmail() == null || !cliente.getEmail().contains("@")) {
             throw new RuntimeException("O e=mail informado é inválido!");
         }
 
